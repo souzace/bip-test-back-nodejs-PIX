@@ -20,6 +20,8 @@ services:
   pix-api-java:
     build: ../services/pix-api-java
     depends_on: [postgres, kafka]
+    ports:
+      - "8080:8080"
 
   pix-api-node:
     build: ../services/pix-api-node
