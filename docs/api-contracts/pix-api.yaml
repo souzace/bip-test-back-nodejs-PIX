@@ -1,0 +1,11 @@
+openapi: 3.0.1
+info:
+  title: PIX API
+  version: v1
+paths:
+  /api/v1/pix/payments:
+    post:
+      summary: Criar pagamento PIX
+      responses:
+        '201':
+          description: Criado

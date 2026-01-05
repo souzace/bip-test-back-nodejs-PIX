@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: pix
+      POSTGRES_USER: pix
+      POSTGRES_PASSWORD: pix
+
+  mongo:
+    image: mongo:6
+
+  kafka:
+    image: bitnami/kafka:latest
+
+  rabbitmq:
+    image: rabbitmq:3-management
+
+  pix-api-java:
+    build: services/pix-api-java
+    depends_on: [postgres, kafka]
+
+  pix-api-node:
+    build: services/pix-api-node
+    depends_on: [mongo, kafka]
