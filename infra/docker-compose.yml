@@ -12,15 +12,15 @@ services:
     image: mongo:6
 
   kafka:
-    image: bitnami/kafka:latest
+    image: confluentinc/cp-kafka:7.5.0
 
   rabbitmq:
     image: rabbitmq:3-management
 
   pix-api-java:
-    build: services/pix-api-java
+    build: ../services/pix-api-java
     depends_on: [postgres, kafka]
 
   pix-api-node:
-    build: services/pix-api-node
+    build: ../services/pix-api-node
     depends_on: [mongo, kafka]
