@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 public class PixTransferController {
 
     @Autowired
-    private PixTransferService service;
+    private final PixTransferService service;
 
     @PostMapping("/transfer")
     public String transferPix(@RequestBody PixTransferRequest request) {
