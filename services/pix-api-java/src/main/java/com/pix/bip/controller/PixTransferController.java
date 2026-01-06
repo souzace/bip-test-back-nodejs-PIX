@@ -1,5 +1,8 @@
 package com.pix.bip.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.pix.bip.service.PixTransferService;
 import com.pix.bip.model.PixTransfer;
 
@@ -29,5 +32,20 @@ public class PixTransferController {
             "Transfer created successfully"
         );
         return ResponseEntity.status(201).body(response);
+    }
+
+
+    @GetMapping("/transfer")
+    public ResponseEntity<List<PixTransferResponse>> listTransfers() {
+        List<PixTransfer> transfers = service.getAllPixTransfers();
+        List<PixTransferResponse> responses = transfers.stream()
+        .map(transfer -> 
+            new PixTransferResponse(
+                String.valueOf(transfer.getId()),
+                "Success",
+                "Transfer retrieved successfully"
+            )
+        ).collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
     }
 }
