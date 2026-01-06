@@ -7,10 +7,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/pix")
 public class PixTransferController {
 
+    @Autowired
+    private PixTransferService service;
+
     @PostMapping("/transfer")
     public String transferPix(@RequestBody PixTransferRequest request) {
-        // Lógica para processar a transferência Pix
-        return "Transferência de " + request.getAmount() + " de " + request.getSenderPixKey() +
-               " para " + request.getReceiverPixKey() + " realizada com sucesso!";
+        PixTransfer transfer = new service.createPixTransfer(request);
+
+        return "Transferência de " + transfer.getAmount() + " de " + transfer.getSenderPixKey() +
+               " para " + transfer.getReceiverPixKey() + " realizada com sucesso!";
     }
 }
