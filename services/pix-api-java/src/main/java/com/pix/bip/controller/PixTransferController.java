@@ -17,7 +17,7 @@ public class PixTransferController {
 
     @PostMapping("/transfer")
     public String transferPix(@RequestBody PixTransferRequest request) {
-        PixTransfer transfer = new service.createPixTransfer(request);
+        PixTransfer transfer = service.createPixTransfer(request);
 
         return "Transferência de " + transfer.getAmount() + " de " + transfer.getSenderPixKey() +
                " para " + transfer.getReceiverPixKey() + " realizada com sucesso!";
