@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class PixTransferService {
 
     @Autowired
-    private PixTransferRepository pixTransferRepository;
+    private final PixTransferRepository pixTransferRepository;
 
     public PixTransfer createPixTransfer(PixTransferRequest request) {
         PixTransfer pixTransfer = new PixTransfer();
