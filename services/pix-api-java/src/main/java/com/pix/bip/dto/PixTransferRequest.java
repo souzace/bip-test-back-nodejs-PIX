@@ -1,11 +1,18 @@
 package com.pix.bip.dto;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 public class PixTransferRequest {
+    @NotBlank
     private String senderPixKey;
+
+    @NotBlank
     private String receiverPixKey;
+
+    @NotNull
     private BigDecimal amount;
+    
     private String description;
 
     public String getSenderPixKey() {
