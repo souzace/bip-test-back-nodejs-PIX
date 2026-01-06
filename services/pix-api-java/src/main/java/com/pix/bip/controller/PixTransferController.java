@@ -7,6 +7,10 @@ import com.pix.bip.dto.PixTransferRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.pix.bip.dto.PixTransferResponse;
+import org.springframework.http.ResponseEntity;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/pix")
@@ -16,10 +20,14 @@ public class PixTransferController {
     private PixTransferService service;
 
     @PostMapping("/transfer")
-    public String transferPix(@RequestBody PixTransferRequest request) {
+    public ResponseEntity<PixTransferResponse> transferPix(@Valid @RequestBody PixTransferRequest request) {
         PixTransfer transfer = service.createPixTransfer(request);
 
-        return "Transferência de " + transfer.getAmount() + " de " + transfer.getSenderPixKey() +
-               " para " + transfer.getReceiverPixKey() + " realizada com sucesso!";
+        PixTransferResponse response = new PixTransferResponse(
+            String.valueOf(transfer.getId()),
+            "Success",
+            "Transfer created successfully"
+        );
+        return ResponseEntity.status(201).body(response);
     }
 }
