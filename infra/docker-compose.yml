@@ -22,6 +22,10 @@ services:
   pix-api-java:
     build: ../services/pix-api-java
     depends_on: [postgres, kafka]
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/pix
+      DB_USER: pix
+      DB_PASS: pix
     ports:
       - "8080:8080"
 
