@@ -22,4 +22,8 @@ public class PixTransferService {
 
         return pixTransferRepository.save(pixTransfer);
     }
+
+    public List<PixTransfer> getAllPixTransfers() {
+        return pixTransferRepository.findAll();
+    }
 }
