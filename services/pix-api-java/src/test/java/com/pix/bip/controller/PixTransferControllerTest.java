@@ -51,7 +51,7 @@ class PixTransferControllerTest {
 
         mockMvc.perform(get("/pix/transfer"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].transactionId").value(1))
-            .andExpect(jsonPath("$[1].transactionId").value(2));
+            .andExpect(jsonPath("$[0].transactionId").value("1"))
+            .andExpect(jsonPath("$[1].transactionId").value("2"));
     }
 }
