@@ -28,6 +28,12 @@ services:
       DB_PASS: pix
     ports:
       - "8080:8080"
+  pix-api-java-test:
+    image: maven:3.8.8-eclipse-temurin-17
+    working_dir: /app
+    volumes:
+      - ../services/pix-api-java:/app
+    command: mvn test -B -Dsurefire.printSummary=true
 
   pix-api-node:
     build: ../services/pix-api-node
