@@ -14,6 +14,9 @@ import com.pix.bip.dto.PixTransferResponse;
 import org.springframework.http.ResponseEntity;
 
 import javax.validation.Valid;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 @RestController
 @RequestMapping("/pix")
@@ -22,8 +25,18 @@ public class PixTransferController {
     @Autowired
     private PixTransferService service;
 
+    @Autowired
+    private javax.validation.Validator validator;
+
+
     @PostMapping("/transfer")
     public ResponseEntity<PixTransferResponse> transferPix(@Valid @RequestBody PixTransferRequest request) {
+
+        Set<ConstraintViolation<PixTransferRequest>> violations = validator.validate(request);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
+
         PixTransfer transfer = service.createPixTransfer(request);
 
         PixTransferResponse response = new PixTransferResponse(

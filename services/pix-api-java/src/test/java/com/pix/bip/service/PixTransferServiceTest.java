@@ -10,10 +10,17 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ConstraintViolation;
+import java.util.Set;
 
 @ExtendWith(MockitoExtension.class)
 class PixTransferServiceTest {
@@ -75,5 +82,57 @@ class PixTransferServiceTest {
         assertEquals(2, result.size());
         assertEquals("sender1", result.get(0).getSenderPixKey());
         assertEquals("sender2", result.get(1).getSenderPixKey());
+    }
+
+    @Test
+    void testGetAllPixTransfersEmptyResult() {
+        when(pixTransferRepository.findAll()).thenReturn(java.util.List.of());
+
+        java.util.List<PixTransfer> result = pixTransferService.getAllPixTransfers();
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    void testCreatePixTransferSenderPixKeyNull() {
+        PixTransferRequest request = new PixTransferRequest();
+        request.setSenderPixKey(null); 
+        request.setReceiverPixKey("user2@email.com");
+        request.setAmount(new BigDecimal("100.50"));
+        request.setDescription("Teste erro senderPixKey null");
+
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<PixTransferRequest>> violations = validator.validate(request);
+
+         assertFalse(violations.isEmpty());
+    }
+
+    @Test
+    void testCreatePixTransferReceiverPixKeyBlank() {
+        PixTransferRequest request = new PixTransferRequest();
+        request.setSenderPixKey("user1@email.com");
+        request.setReceiverPixKey(""); 
+        request.setAmount(new BigDecimal("100.50"));
+        request.setDescription("Teste erro receiverPixKey blank");
+
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<PixTransferRequest>> violations = validator.validate(request);
+
+        assertFalse(violations.isEmpty());
+    }
+
+    @Test
+    void testCreatePixTransferAmountNull() {
+        PixTransferRequest request = new PixTransferRequest();
+        request.setSenderPixKey("user1@email.com");
+        request.setReceiverPixKey("user2@email.com");
+        request.setAmount(null);
+        request.setDescription("Teste erro amount null");
+
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<PixTransferRequest>> violations = validator.validate(request);
+
+        assertFalse(violations.isEmpty());
     }
 }   
