@@ -9,7 +9,12 @@ RUN mvn dependency:go-offline
 # Agora copie o restante do código
 COPY . .
 
-# Compile o projeto
+# Execute os testes
+RUN mvn test
+
+RUN cat /app/target/surefire-reports/*.txt || true
+
+# Compile o projeto (sem rodar testes novamente)
 RUN mvn clean package -DskipTests
 
 # Etapa 2: imagem final
