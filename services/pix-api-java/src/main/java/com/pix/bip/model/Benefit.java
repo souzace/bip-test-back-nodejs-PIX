@@ -1,4 +1,4 @@
-package com.pix.bip;
+package com.pix.bip.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
