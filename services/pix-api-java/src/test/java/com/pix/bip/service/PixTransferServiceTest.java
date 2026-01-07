@@ -50,4 +50,30 @@ class PixTransferServiceTest {
         assertEquals(new BigDecimal("100.00"), result.getAmount());
         assertEquals("Test transfer", result.getDescription());
     }
-}
+
+    @Test
+    void testGetAllPixTransfers() {
+        PixTransfer transfer1 = new PixTransfer();
+        transfer1.setId(1L);
+        transfer1.setSenderPixKey("sender1");
+        transfer1.setReceiverPixKey("receiver1");
+        transfer1.setAmount(new BigDecimal("50.00"));
+        transfer1.setDescription("First transfer");
+
+        PixTransfer transfer2 = new PixTransfer();
+        transfer2.setId(2L);
+        transfer2.setSenderPixKey("sender2");
+        transfer2.setReceiverPixKey("receiver2");
+        transfer2.setAmount(new BigDecimal("75.00"));
+        transfer2.setDescription("Second transfer");
+
+        when(pixTransferRepository.findAll()).thenReturn(java.util.List.of(transfer1, transfer2));
+
+        java.util.List<PixTransfer> result = pixTransferService.getAllPixTransfers();
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("sender1", result.get(0).getSenderPixKey());
+        assertEquals("sender2", result.get(1).getSenderPixKey());
+    }
+}   
