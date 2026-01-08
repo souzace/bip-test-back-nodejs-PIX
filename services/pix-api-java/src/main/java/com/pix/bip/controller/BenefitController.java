@@ -39,4 +39,10 @@ public class BenefitController {
         benefitService.deleteBenefit(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Benefit> updateBenefit(@PathVariable Long id, @RequestBody Benefit updatedBenefit) {
+        Benefit benefit = benefitService.updateBenefit(id, updatedBenefit);
+        return ResponseEntity.ok(benefit);
+    }
 }
