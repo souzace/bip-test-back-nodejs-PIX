@@ -3,15 +3,15 @@ package com.pix.bip.model;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
+import java.util.UUID;
 
 @Entity
 @Table(name = "pix_payment")
-public class PixTransfer {
+public class PixPayment {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID id;
 
     @Column(name = "sender_pix_key", nullable = false)
     private String senderPixKey;
@@ -25,14 +25,17 @@ public class PixTransfer {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "timestamp", nullable = false)
-    private LocalDateTime timestamp = LocalDateTime.now();
+    @Column(name = "status", nullable = false)
+    private String status;
 
-    public Long getId() {
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -68,11 +71,19 @@ public class PixTransfer {
         this.description = description;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public String getStatus() {
+        return status;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

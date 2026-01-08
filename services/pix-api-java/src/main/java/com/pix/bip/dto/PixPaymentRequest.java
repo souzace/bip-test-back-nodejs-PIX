@@ -3,7 +3,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
-public class PixTransferRequest {
+public class PixPaymentRequest {
     @NotBlank
     private String senderPixKey;
 
@@ -14,6 +14,9 @@ public class PixTransferRequest {
     private BigDecimal amount;
     
     private String description;
+
+    @NotBlank
+    private String status; 
 
     public String getSenderPixKey() {
         return senderPixKey;
@@ -46,4 +49,14 @@ public class PixTransferRequest {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    
 }
