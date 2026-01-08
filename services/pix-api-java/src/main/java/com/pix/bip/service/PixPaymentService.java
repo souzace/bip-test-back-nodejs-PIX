@@ -7,6 +7,8 @@ import com.pix.bip.model.PixPayment;
 import com.pix.bip.repository.PixPaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PixPaymentService {
@@ -21,6 +23,10 @@ public class PixPaymentService {
 
     public List<PixPayment> getAllPixPayments() {
         return pixPaymentRepository.findAll();
+    }
+
+    public Optional<PixPayment> getPixPaymentById(UUID id) {
+        return pixPaymentRepository.findById(id);
     }
 
     private PixPayment mapToEntity(PixPaymentRequest request) {
