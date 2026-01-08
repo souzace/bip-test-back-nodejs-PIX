@@ -6,6 +6,150 @@ paths:
   /api/v1/pix/payments:
     post:
       summary: Criar pagamento PIX
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PixPaymentRequest'
+            example:
+              senderPixKey: "sender1"
+              receiverPixKey: "receiver1"
+              amount: 50.0
+              description: "Primeiro pagamento"
+              status: "PENDING"
       responses:
         '201':
-          description: Criado
+          description: Pagamento criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixPaymentResponse'
+    get:
+      summary: Consulta paginada de pagamentos PIX
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+          description: "Filtra pagamentos pelo status (ex: COMPLETED, PENDING)"
+        - in: query
+          name: senderPixKey
+          schema:
+            type: string
+          description: "Filtra pela chave PIX do remetente"
+        - in: query
+          name: receiverPixKey
+          schema:
+            type: string
+          description: "Filtra pela chave PIX do destinatário"
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 0
+          description: Número da página para paginação
+        - in: query
+          name: size
+          schema:
+            type: integer
+            default: 10
+          description: Tamanho da página
+      responses:
+        '200':
+          description: Lista paginada de pagamentos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PixPaymentResponse'
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  size:
+                    type: integer
+                  number:
+                    type: integer
+              example:
+                  content:
+                    - id: "00000000-0000-0000-0000-000000000001"
+                      senderPixKey: "sender1"
+                      receiverPixKey: "receiver1"
+                      amount: 50.0
+                      description: "Primeiro pagamento"
+                      status: "COMPLETED"
+                      createdAt: "2026-01-08T16:38:56.138585779"
+                  totalElements: 1
+                  totalPages: 1
+                  size: 10
+                  number: 0
+  /api/v1/pix/payments/{id}:
+    get:
+        summary: Consultar pagamento PIX por ID
+        operationId: getPixPaymentById
+        parameters:
+          - in: path
+            name: id
+            required: true
+            schema:
+              type: string
+              format: uuid
+            description: ID do pagamento PIX
+        responses:
+          '200':
+            description: Pagamento encontrado
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PixPaymentResponse'
+                example:
+                  id: "00000000-0000-0000-0000-000000000001"
+                  senderPixKey: "sender1"
+                  receiverPixKey: "receiver1"
+                  amount: 50.0
+                  description: "Primeiro pagamento"
+                  status: "COMPLETED"
+                  createdAt: "2026-01-08T16:38:56.138585779"
+          '404':
+            description: Pagamento não encontrado
+components:
+  schemas:
+    PixPaymentRequest:
+      type: object
+      properties:
+        senderPixKey:
+          type: string
+        receiverPixKey:
+          type: string
+        amount:
+          type: number
+          format: double
+        description:
+          type: string
+        status:
+          type: string
+    PixPaymentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        senderPixKey:
+          type: string
+        receiverPixKey:
+          type: string
+        amount:
+          type: number
+          format: double
+        description:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
