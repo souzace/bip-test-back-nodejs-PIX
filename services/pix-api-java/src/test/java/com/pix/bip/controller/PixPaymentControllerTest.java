@@ -59,7 +59,7 @@ class PixPaymentControllerTest {
         when(pixPaymentService.getAllPixPayments(null, null, null, PageRequest.of(0, 10)))
         .thenReturn(new PageImpl<>(mockList));
 
-        mockMvc.perform(get("/pix-payment/payment"))
+        mockMvc.perform(get("/api/v1/pix/payments"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.content[0].id").value("00000000-0000-0000-0000-000000000001"))
             .andExpect(jsonPath("$.content[1].id").value("00000000-0000-0000-0000-000000000002"));
@@ -79,7 +79,7 @@ class PixPaymentControllerTest {
 
         when(pixPaymentService.getPixPaymentById(paymentId)).thenReturn(java.util.Optional.of(payment));
 
-        mockMvc.perform(get("/pix-payment/payment/{id}", paymentId))
+        mockMvc.perform(get("/api/v1/pix/payments/{id}", paymentId))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value("00000000-0000-0000-0000-000000000003"))
             .andExpect(jsonPath("$.senderPixKey").value("sender3"));
@@ -91,7 +91,7 @@ class PixPaymentControllerTest {
 
         when(pixPaymentService.getPixPaymentById(paymentId)).thenReturn(java.util.Optional.empty());
 
-        mockMvc.perform(get("/pix-payment/payment/{id}", paymentId))
+        mockMvc.perform(get("/api/v1/pix/payments/{id}", paymentId))
             .andExpect(status().isNotFound());
     }
 
@@ -114,7 +114,7 @@ class PixPaymentControllerTest {
            PageRequest.of(0, 10)
        )).thenReturn(pagedResponse);
 
-       mockMvc.perform(get("/pix-payment/payment")
+       mockMvc.perform(get("/api/v1/pix/payments")
            .param("status", "COMPLETED")
            .param("page", "0")
            .param("size", "10"))

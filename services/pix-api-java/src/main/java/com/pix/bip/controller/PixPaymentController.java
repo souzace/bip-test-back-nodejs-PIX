@@ -25,7 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 
 @RestController
-@RequestMapping("/pix-payment")
+@RequestMapping("/api/v1/pix/payments")
 public class PixPaymentController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class PixPaymentController {
     private javax.validation.Validator validator;
 
 
-    @PostMapping("/payment")
+    @PostMapping()
     public ResponseEntity<PixPaymentResponse> makePayment(@Valid @RequestBody PixPaymentRequest request) {
         Set<ConstraintViolation<PixPaymentRequest>> violations = validator.validate(request);
         if (!violations.isEmpty()) {
@@ -49,7 +49,7 @@ public class PixPaymentController {
     }
 
 
-    @GetMapping("/payment")
+    @GetMapping()
     public ResponseEntity<Page<PixPaymentResponse>> listPayments(
        @RequestParam(required = false) String status,
        @RequestParam(required = false) String senderPixKey,
@@ -63,7 +63,7 @@ public class PixPaymentController {
         return ResponseEntity.ok(responsePage);
     }
 
-    @GetMapping("/payment/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<PixPaymentResponse> getPixPaymentById(@PathVariable UUID id) {
         return service.getPixPaymentById(id)
                 .map(payment -> ResponseEntity.ok(new PixPaymentResponse(payment)))
