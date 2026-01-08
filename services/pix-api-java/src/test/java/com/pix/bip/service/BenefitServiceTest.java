@@ -85,4 +85,25 @@ class BenefitServiceTest {
         verify(benefitRepository, times(1)).deleteById(benefitId);
     }
 
+    @Test
+    void testUpdateBenefit() {
+        Benefit existingBenefit = new Benefit();
+        existingBenefit.setId(1L);
+        existingBenefit.setName("Old Name");
+        existingBenefit.setDiscountPercentage(new BigDecimal("5.00"));
+
+        Benefit updatedBenefit = new Benefit();
+        updatedBenefit.setName("New Name");
+        updatedBenefit.setDiscountPercentage(new BigDecimal("15.00"));
+
+        when(benefitRepository.findById(1L)).thenReturn(Optional.of(existingBenefit));
+        when(benefitRepository.save(any(Benefit.class))).thenReturn(existingBenefit);
+
+        Benefit result = benefitService.updateBenefit(1L, updatedBenefit);
+
+        assertNotNull(result);
+        assertEquals("New Name", result.getName());
+        assertEquals(new BigDecimal("15.00"), result.getDiscountPercentage());
+    }
+
 }
