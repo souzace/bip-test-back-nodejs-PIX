@@ -57,4 +57,34 @@ class PixPaymentControllerTest {
             .andExpect(jsonPath("$[0].id").value("00000000-0000-0000-0000-000000000001"))
             .andExpect(jsonPath("$[1].id").value("00000000-0000-0000-0000-000000000002"));
     }
+
+    @Test
+    void testGetPaymentByIdFound() throws Exception {
+        UUID paymentId = UUID.fromString("00000000-0000-0000-0000-000000000003");
+
+        PixPayment payment = new PixPayment();
+        payment.setId(paymentId);
+        payment.setSenderPixKey("sender3");
+        payment.setReceiverPixKey("receiver3");
+        payment.setAmount(new BigDecimal("150.00"));
+        payment.setDescription("Third payment");
+        payment.setStatus("PENDING");
+
+        when(pixPaymentService.getPixPaymentById(paymentId)).thenReturn(java.util.Optional.of(payment));
+
+        mockMvc.perform(get("/pix-payment/payment/{id}", paymentId))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value("00000000-0000-0000-0000-000000000003"))
+            .andExpect(jsonPath("$.senderPixKey").value("sender3"));
+    }
+
+    @Test
+    void testGetPaymentByIdNotFound() throws Exception {
+        UUID paymentId = UUID.fromString("00000000-0000-0000-0000-000000000004");
+
+        when(pixPaymentService.getPixPaymentById(paymentId)).thenReturn(java.util.Optional.empty());
+
+        mockMvc.perform(get("/pix-payment/payment/{id}", paymentId))
+            .andExpect(status().isNotFound());
+    }
 }

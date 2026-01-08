@@ -9,6 +9,7 @@ import java.util.UUID;
 @Table(name = "pix_payment")
 public class PixPayment {
 
+    @Id
     @GeneratedValue
     @Column(columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID id;
