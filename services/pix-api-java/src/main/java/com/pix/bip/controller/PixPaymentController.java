@@ -20,6 +20,10 @@ import javax.validation.ConstraintViolationException;
 
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+
 @RestController
 @RequestMapping("/pix-payment")
 public class PixPaymentController {
@@ -46,15 +50,18 @@ public class PixPaymentController {
 
 
     @GetMapping("/payment")
-    public ResponseEntity<List<PixPaymentResponse>> listPayments() {
-        List<PixPayment> payments = service.getAllPixPayments();
-        List<PixPaymentResponse> responses = payments.stream()
-        .map(payment -> 
-            new PixPaymentResponse(payment)
-        ).collect(Collectors.toList());
-        return ResponseEntity.ok(responses);
-    }
+    public ResponseEntity<Page<PixPaymentResponse>> listPayments(
+       @RequestParam(required = false) String status,
+       @RequestParam(required = false) String senderPixKey,
+       @RequestParam(required = false) String receiverPixKey,
+       @RequestParam(defaultValue = "0") int page,
+       @RequestParam(defaultValue = "10") int size) {   
 
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PixPayment> paymentsPage = service.getAllPixPayments(status, senderPixKey, receiverPixKey, pageable);
+        Page<PixPaymentResponse> responsePage = paymentsPage.map(payment -> new PixPaymentResponse(payment));
+        return ResponseEntity.ok(responsePage);
+    }
 
     @GetMapping("/payment/{id}")
     public ResponseEntity<PixPaymentResponse> getPixPaymentById(@PathVariable UUID id) {
