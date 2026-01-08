@@ -9,6 +9,9 @@ services:
       POSTGRES_PASSWORD: pix
     ports:
       - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ../scripts/db-init.sql:/docker-entrypoint-initdb.d/db-init.sql
 
   mongo:
     image: mongo:6
@@ -38,3 +41,6 @@ services:
   pix-api-node:
     build: ../services/pix-api-node
     depends_on: [mongo, kafka]
+
+volumes:
+  pgdata:
