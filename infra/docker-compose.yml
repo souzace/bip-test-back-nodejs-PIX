@@ -36,7 +36,7 @@ services:
     working_dir: /app
     volumes:
       - ../services/pix-api-java:/app
-    command: mvn test -B -Dsurefire.printSummary=true
+    command: mvn test -B -Dsurefire.printSummary=true -Dsurefire.reportFormat=plain
 
   pix-api-node:
     build: ../services/pix-api-node
