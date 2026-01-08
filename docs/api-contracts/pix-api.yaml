@@ -90,33 +90,138 @@ paths:
                   number: 0
   /api/v1/pix/payments/{id}:
     get:
-        summary: Consultar pagamento PIX por ID
-        operationId: getPixPaymentById
-        parameters:
-          - in: path
-            name: id
-            required: true
+      summary: Consultar pagamento PIX por ID
+      operationId: getPixPaymentById
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do pagamento PIX
+      responses:
+        '200':
+          description: Pagamento encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PixPaymentResponse'
+              example:
+                id: "00000000-0000-0000-0000-000000000001"
+                senderPixKey: "sender1"
+                receiverPixKey: "receiver1"
+                amount: 50.0
+                description: "Primeiro pagamento"
+                status: "COMPLETED"
+                createdAt: "2026-01-08T16:38:56.138585779"
+        '404':
+          description: Pagamento não encontrado
+  /api/v1/benefits:
+    post:
+      summary: Criar benefício
+      requestBody:
+        required: true
+        content:
+          application/json:
             schema:
-              type: string
-              format: uuid
-            description: ID do pagamento PIX
-        responses:
-          '200':
-            description: Pagamento encontrado
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/PixPaymentResponse'
-                example:
-                  id: "00000000-0000-0000-0000-000000000001"
-                  senderPixKey: "sender1"
-                  receiverPixKey: "receiver1"
-                  amount: 50.0
-                  description: "Primeiro pagamento"
-                  status: "COMPLETED"
-                  createdAt: "2026-01-08T16:38:56.138585779"
-          '404':
-            description: Pagamento não encontrado
+              $ref: '#/components/schemas/BenefitRequest'
+            example:
+              name: "Vale Alimentação"
+              description: "Benefício mensal para alimentação"
+      responses:
+        '201':
+          description: Benefício criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenefitResponse'
+    get:
+      summary: Listar benefícios
+      responses:
+        '200':
+          description: Lista de benefícios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BenefitResponse'
+              example:
+                - id: "00000000-0000-0000-0000-000000000001"
+                  name: "Vale Alimentação"
+                  description: "Benefício mensal para alimentação"
+  /api/v1/benefits/{id}:
+    get:
+      summary: Consultar benefício por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do benefício
+      responses:
+        '200':
+          description: Benefício encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenefitResponse'
+              example:
+                id: "00000000-0000-0000-0000-000000000001"
+                name: "Vale Alimentação"
+                description: "Benefício mensal para alimentação"
+        '404':
+          description: Benefício não encontrado
+    put:
+      summary: Atualizar benefício
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do benefício
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BenefitRequest'
+            example:
+              name: "Vale Refeição"
+              description: "Benefício atualizado"
+      responses:
+        '200':
+          description: Benefício atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BenefitResponse'
+              example:
+                id: "00000000-0000-0000-0000-000000000001"
+                name: "Vale Refeição"
+                description: "Benefício atualizado"
+        '404':
+          description: Benefício não encontrado
+    delete:
+      summary: Remover benefício
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID do benefício
+      responses:
+        '204':
+          description: Benefício removido com sucesso
+        '404':
+          description: Benefício não encontrado
 components:
   schemas:
     PixPaymentRequest:
@@ -153,3 +258,20 @@ components:
         createdAt:
           type: string
           format: date-time
+    BenefitRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+    BenefitResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
