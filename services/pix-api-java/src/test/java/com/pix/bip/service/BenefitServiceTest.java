@@ -54,4 +54,24 @@ class BenefitServiceTest {
         assertEquals("Senior Citizen Discount", result.get().getName());
         assertEquals(new BigDecimal("20.00"), result.get().getDiscountPercentage());
     }
+
+    @Test
+    void testGetAllBenefits() {
+        Benefit benefit1 = new Benefit();
+        benefit1.setId(1L);
+        benefit1.setName("Employee Discount");
+        benefit1.setDiscountPercentage(new BigDecimal("10.00"));
+
+        Benefit benefit2 = new Benefit();
+        benefit2.setId(2L);
+        benefit2.setName("Holiday Discount");
+        benefit2.setDiscountPercentage(new BigDecimal("25.00"));
+
+        when(benefitRepository.findAll()).thenReturn(java.util.Arrays.asList(benefit1, benefit2));
+
+        java.util.List<Benefit> result = benefitService.getAllBenefits();
+
+        assertEquals(2, result.size());
+    }
+
 }
