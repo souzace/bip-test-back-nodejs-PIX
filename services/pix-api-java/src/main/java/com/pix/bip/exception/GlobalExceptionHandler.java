@@ -1,6 +1,6 @@
 package com.pix.bip.exception;
 
-import com.pix.bip.dto.PixTransferResponse;
+import com.pix.bip.dto.PixPaymentResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,16 +12,15 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 public class GlobalExceptionHandler {
 
    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<PixTransferResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        String message = ex.getBindingResult().getFieldErrors().stream()
+    public ResponseEntity<PixPaymentResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        String description = ex.getBindingResult().getFieldErrors().stream()
             .map(error -> error.getField() + ": " + error.getDefaultMessage())
             .findFirst()
             .orElse("Invalid Data.");
 
-        PixTransferResponse response = new PixTransferResponse(
-            null,
+        PixPaymentResponse response = new PixPaymentResponse(
             "ERROR",
-            message
+            description
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
@@ -29,9 +28,8 @@ public class GlobalExceptionHandler {
 
     
     @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
-    public ResponseEntity<PixTransferResponse> handleDataIntegrityViolationException(Exception ex) {
-        PixTransferResponse response = new PixTransferResponse(
-            null,
+    public ResponseEntity<PixPaymentResponse> handleDataIntegrityViolationException(Exception ex) {
+        PixPaymentResponse response = new PixPaymentResponse(
             "ERROR",
             "Required Fields or Invalid Data: "
         );
@@ -42,9 +40,8 @@ public class GlobalExceptionHandler {
     
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<PixTransferResponse> handleGenericException(Exception ex) {
-        PixTransferResponse response = new PixTransferResponse(
-            null,
+    public ResponseEntity<PixPaymentResponse> handleGenericException(Exception ex) {
+        PixPaymentResponse response = new PixPaymentResponse(
             "ERROR",
             ex.getMessage()
         );
