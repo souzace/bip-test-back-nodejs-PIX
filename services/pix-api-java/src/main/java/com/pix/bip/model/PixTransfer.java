@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "pix_transfers")
+@Table(name = "pix_payment")
 public class PixTransfer {
 
     @Id
