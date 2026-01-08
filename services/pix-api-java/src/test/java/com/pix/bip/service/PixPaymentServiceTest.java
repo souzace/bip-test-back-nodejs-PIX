@@ -3,25 +3,33 @@ package com.pix.bip.service;
 import com.pix.bip.dto.PixPaymentRequest;
 import com.pix.bip.model.PixPayment;
 import com.pix.bip.repository.PixPaymentRepository;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.mockito.Mockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Collections;
+import java.util.Set;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ConstraintViolation;
-import java.util.Set;
-import java.util.UUID;
+
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 @ExtendWith(MockitoExtension.class)
 class PixPaymentServiceTest {
@@ -79,20 +87,30 @@ class PixPaymentServiceTest {
         payment2.setDescription("Second payment");
         payment2.setStatus("COMPLETED");
 
-        when(pixPaymentRepository.findAll()).thenReturn(java.util.List.of(payment1, payment2));
+        when(pixPaymentRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(List.of(payment1, payment2)));
 
-        java.util.List<PixPayment> result = pixPaymentService.getAllPixPayments();
+        Page<PixPayment> result = pixPaymentService.getAllPixPayments(
+            null, 
+            null, 
+            null, 
+            PageRequest.of(0, 10)
+        );
         assertNotNull(result);
-        assertEquals(2, result.size());
-        assertEquals("sender1", result.get(0).getSenderPixKey());
-        assertEquals("sender2", result.get(1).getSenderPixKey());
+        assertEquals(2, result.getContent().size());
+        assertEquals("sender1", result.getContent().get(0).getSenderPixKey());
+        assertEquals("sender2", result.getContent().get(1).getSenderPixKey());
     }
 
     @Test
     void testGetAllPixPaymentsEmptyResult() {
-        when(pixPaymentRepository.findAll()).thenReturn(java.util.List.of());
+        when(pixPaymentRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(List.of()));
 
-        java.util.List<PixPayment> result = pixPaymentService.getAllPixPayments();
+        Page<PixPayment> result = pixPaymentService.getAllPixPayments(
+            null, 
+            null, 
+            null, 
+            PageRequest.of(0, 10)
+        );
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -141,4 +159,6 @@ class PixPaymentServiceTest {
 
         assertFalse(violations.isEmpty());
     }
+
+    
 }   
