@@ -29,4 +29,13 @@ public class BenefitService {
     public void deleteBenefit(Long id) {
         benefitRepository.deleteById(id);
     }
+
+    public Benefit updateBenefit(Long id, Benefit updatedBenefit) {
+        return benefitRepository.findById(id)
+        .map(benefit -> {
+            benefit.setName(updatedBenefit.getName());
+            benefit.setDiscountPercentage(updatedBenefit.getDiscountPercentage());
+            return benefitRepository.save(benefit);
+        }).orElseThrow(() -> new RuntimeException("Benefit not found with id " + id));
+    }
 }
