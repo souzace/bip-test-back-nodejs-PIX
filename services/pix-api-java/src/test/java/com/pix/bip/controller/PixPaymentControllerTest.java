@@ -18,6 +18,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import java.util.Collections;
+import org.mockito.Mockito;
+
 @WebMvcTest(PixPaymentController.class)
 class PixPaymentControllerTest {
     @Autowired
@@ -50,12 +56,13 @@ class PixPaymentControllerTest {
             secondPayment
         );
 
-        when(pixPaymentService.getAllPixPayments()).thenReturn(mockList);
+        when(pixPaymentService.getAllPixPayments(null, null, null, PageRequest.of(0, 10)))
+        .thenReturn(new PageImpl<>(mockList));
 
         mockMvc.perform(get("/pix-payment/payment"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].id").value("00000000-0000-0000-0000-000000000001"))
-            .andExpect(jsonPath("$[1].id").value("00000000-0000-0000-0000-000000000002"));
+            .andExpect(jsonPath("$.content[0].id").value("00000000-0000-0000-0000-000000000001"))
+            .andExpect(jsonPath("$.content[1].id").value("00000000-0000-0000-0000-000000000002"));
     }
 
     @Test
@@ -86,5 +93,35 @@ class PixPaymentControllerTest {
 
         mockMvc.perform(get("/pix-payment/payment/{id}", paymentId))
             .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testListPaymentsWithPaginationAndFilter() throws Exception {
+       UUID paymentId = UUID.randomUUID();
+       PixPayment payment = new PixPayment();
+       payment.setId(paymentId);
+       payment.setSenderPixKey("sender-key");
+       payment.setReceiverPixKey("receiver-key");
+       payment.setAmount(new BigDecimal("150.00"));
+       payment.setDescription("Test payment");
+       payment.setStatus("COMPLETED");
+
+       Page<PixPayment> pagedResponse = new PageImpl<>(Collections.singletonList(payment));
+       Mockito.when(pixPaymentService.getAllPixPayments(
+           "COMPLETED",
+           null,
+           null, 
+           PageRequest.of(0, 10)
+       )).thenReturn(pagedResponse);
+
+       mockMvc.perform(get("/pix-payment/payment")
+           .param("status", "COMPLETED")
+           .param("page", "0")
+           .param("size", "10"))
+           .andExpect(status().isOk())
+           .andExpect(jsonPath("$.content[0].id").value(paymentId.toString()))
+           .andExpect(jsonPath("$.content[0].status").value("COMPLETED"))
+           .andExpect(jsonPath("$.content[0].amount").value(150.00));
+       
     }
 }
