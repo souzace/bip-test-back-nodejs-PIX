@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class PixPaymentService {
@@ -21,8 +23,24 @@ public class PixPaymentService {
         return pixPaymentRepository.save(payment);
     }
 
-    public List<PixPayment> getAllPixPayments() {
-        return pixPaymentRepository.findAll();
+    public Page<PixPayment> getAllPixPayments(String status, String senderPixKey, String receiverPixKey, Pageable pageable) {
+        if (status != null && senderPixKey != null && receiverPixKey != null) {
+            return pixPaymentRepository.findByStatusAndSenderPixKeyAndReceiverPixKey(status, senderPixKey, receiverPixKey, pageable);
+        } else if (status != null && senderPixKey != null) {
+            return pixPaymentRepository.findByStatusAndSenderPixKey(status, senderPixKey, pageable);
+        } else if (status != null && receiverPixKey != null) {
+            return pixPaymentRepository.findByStatusAndReceiverPixKey(status, receiverPixKey, pageable);
+        } else if (senderPixKey != null && receiverPixKey != null) {
+            return pixPaymentRepository.findBySenderPixKeyAndReceiverPixKey(senderPixKey, receiverPixKey, pageable);
+        } else if (status != null) {
+            return pixPaymentRepository.findByStatus(status, pageable);
+        } else if (senderPixKey != null) {
+            return pixPaymentRepository.findBySenderPixKey(senderPixKey, pageable);
+        } else if (receiverPixKey != null) {
+            return pixPaymentRepository.findByReceiverPixKey(receiverPixKey, pageable);
+        } else {
+            return pixPaymentRepository.findAll(pageable);
+        }
     }
 
     public Optional<PixPayment> getPixPaymentById(UUID id) {
