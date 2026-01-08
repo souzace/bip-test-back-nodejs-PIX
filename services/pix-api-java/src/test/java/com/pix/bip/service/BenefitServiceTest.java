@@ -38,4 +38,20 @@ class BenefitServiceTest {
         assertEquals("Student Discount", result.getName());
         assertEquals(new BigDecimal("15.00"), result.getDiscountPercentage());
     }
+
+    @Test
+    void testGetBenefitById() {
+        Benefit benefit = new Benefit();
+        benefit.setId(1L);
+        benefit.setName("Senior Citizen Discount");
+        benefit.setDiscountPercentage(new BigDecimal("20.00"));
+
+        when(benefitRepository.findById(1L)).thenReturn(Optional.of(benefit));
+
+        Optional<Benefit> result = benefitService.getBenefitById(1L);
+
+        assertTrue(result.isPresent());
+        assertEquals("Senior Citizen Discount", result.get().getName());
+        assertEquals(new BigDecimal("20.00"), result.get().getDiscountPercentage());
+    }
 }
