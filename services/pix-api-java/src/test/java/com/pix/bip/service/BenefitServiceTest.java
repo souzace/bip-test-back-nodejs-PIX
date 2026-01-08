@@ -74,4 +74,15 @@ class BenefitServiceTest {
         assertEquals(2, result.size());
     }
 
+    @Test
+    void testDeleteBenefit() {
+        Long benefitId = 1L;
+
+        doNothing().when(benefitRepository).deleteById(benefitId);
+
+        benefitService.deleteBenefit(benefitId);
+
+        verify(benefitRepository, times(1)).deleteById(benefitId);
+    }
+
 }
