@@ -55,5 +55,12 @@ public class PixPaymentController {
         return ResponseEntity.ok(responses);
     }
 
+
+    @GetMapping("/payment/{id}")
+    public ResponseEntity<PixPaymentResponse> getPixPaymentById(@PathVariable UUID id) {
+        return service.getPixPaymentById(id)
+                .map(payment -> ResponseEntity.ok(new PixPaymentResponse(payment)))
+                .orElse(ResponseEntity.notFound().build());
+    }
     
 }
