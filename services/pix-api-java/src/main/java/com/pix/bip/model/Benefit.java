@@ -2,21 +2,24 @@ package com.pix.bip.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 public class Benefit {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    @Column(columnDefinition = "uuid", updatable = false, nullable = false)
+    private UUID  id;
 
     private String name;
     private BigDecimal discountPercentage;
+    private String description;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -34,5 +37,13 @@ public class Benefit {
 
     public void setDiscountPercentage(BigDecimal discountPercentage) {
         this.discountPercentage = discountPercentage;
+    }
+
+    public void setDescription(String description) { 
+        this.description = description; 
+    }
+
+    public String getDescription() { 
+        return this.description; 
     }
 }
