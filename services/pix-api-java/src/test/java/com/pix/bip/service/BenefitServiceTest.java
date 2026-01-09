@@ -1,19 +1,20 @@
 package com.pix.bip.service;
 
+import com.pix.bip.dto.BenefitRequest;
+import com.pix.bip.dto.BenefitResponse;
 import com.pix.bip.model.Benefit;
 import com.pix.bip.repository.BenefitRepository;
+import com.pix.bip.service.BenefitService;
+import java.util.UUID;
+import java.util.Optional;
+import java.math.BigDecimal;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.math.BigDecimal;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(MockitoExtension.class)
 class BenefitServiceTest {
@@ -26,57 +27,65 @@ class BenefitServiceTest {
 
     @Test
     void testCreateBenefit() {
+        BenefitRequest request = new BenefitRequest();
+        request.setName("Student Discount");
+        request.setDescription("Discount for students");
+        request.setDiscountPercentage(new BigDecimal("15.00"));
+
         Benefit benefit = new Benefit();
-        benefit.setName("Student Discount");
-        benefit.setDiscountPercentage(new BigDecimal("15.00"));
+        benefit.setName(request.getName());
+        benefit.setDescription(request.getDescription());
+        benefit.setDiscountPercentage(request.getDiscountPercentage());
 
-        when(benefitRepository.save(benefit)).thenReturn(benefit);
+        when(benefitRepository.save(any(Benefit.class))).thenReturn(benefit);
 
-        Benefit result = benefitService.createBenefit(benefit);
+        BenefitResponse result = benefitService.createBenefit(request);
 
         assertNotNull(result);
         assertEquals("Student Discount", result.getName());
+        assertEquals("Discount for students", result.getDescription());
         assertEquals(new BigDecimal("15.00"), result.getDiscountPercentage());
-    }
+    }   
 
     @Test
     void testGetBenefitById() {
         Benefit benefit = new Benefit();
-        benefit.setId(1L);
+        benefit.setId(UUID.randomUUID());
         benefit.setName("Senior Citizen Discount");
-        benefit.setDiscountPercentage(new BigDecimal("20.00"));
+        benefit.setDescription("Discount for senior citizens");
 
-        when(benefitRepository.findById(1L)).thenReturn(Optional.of(benefit));
-
-        Optional<Benefit> result = benefitService.getBenefitById(1L);
+        when(benefitRepository.findById(benefit.getId())).thenReturn(Optional.of(benefit));
+        Optional<BenefitResponse> result = benefitService.getBenefitById(benefit.getId());
 
         assertTrue(result.isPresent());
         assertEquals("Senior Citizen Discount", result.get().getName());
-        assertEquals(new BigDecimal("20.00"), result.get().getDiscountPercentage());
+        assertEquals("Discount for senior citizens", result.get().getDescription());
     }
 
     @Test
     void testGetAllBenefits() {
         Benefit benefit1 = new Benefit();
-        benefit1.setId(1L);
+        benefit1.setId(UUID.randomUUID());
         benefit1.setName("Employee Discount");
-        benefit1.setDiscountPercentage(new BigDecimal("10.00"));
+        benefit1.setDescription("Discount for employees");
 
         Benefit benefit2 = new Benefit();
-        benefit2.setId(2L);
+        benefit2.setId(UUID.randomUUID());
         benefit2.setName("Holiday Discount");
-        benefit2.setDiscountPercentage(new BigDecimal("25.00"));
+        benefit2.setDescription("Discount during holidays");
 
         when(benefitRepository.findAll()).thenReturn(java.util.Arrays.asList(benefit1, benefit2));
 
-        java.util.List<Benefit> result = benefitService.getAllBenefits();
+        java.util.List<BenefitResponse> result = benefitService.getAllBenefits();
 
         assertEquals(2, result.size());
+        assertEquals("Employee Discount", result.get(0).getName());
+        assertEquals("Holiday Discount", result.get(1).getName());
     }
 
     @Test
     void testDeleteBenefit() {
-        Long benefitId = 1L;
+        UUID benefitId = UUID.randomUUID();
 
         doNothing().when(benefitRepository).deleteById(benefitId);
 
@@ -88,22 +97,22 @@ class BenefitServiceTest {
     @Test
     void testUpdateBenefit() {
         Benefit existingBenefit = new Benefit();
-        existingBenefit.setId(1L);
+        existingBenefit.setId(UUID.randomUUID());
         existingBenefit.setName("Old Name");
-        existingBenefit.setDiscountPercentage(new BigDecimal("5.00"));
+        existingBenefit.setDescription("Old Description");
 
-        Benefit updatedBenefit = new Benefit();
-        updatedBenefit.setName("New Name");
-        updatedBenefit.setDiscountPercentage(new BigDecimal("15.00"));
+        BenefitRequest updatedRequest = new BenefitRequest();
+        updatedRequest.setName("New Name");
+        updatedRequest.setDescription("New Description");
 
-        when(benefitRepository.findById(1L)).thenReturn(Optional.of(existingBenefit));
+        when(benefitRepository.findById(existingBenefit.getId())).thenReturn(Optional.of(existingBenefit));
         when(benefitRepository.save(any(Benefit.class))).thenReturn(existingBenefit);
 
-        Benefit result = benefitService.updateBenefit(1L, updatedBenefit);
+        Optional<BenefitResponse> result = benefitService.updateBenefit(existingBenefit.getId(), updatedRequest);
 
-        assertNotNull(result);
-        assertEquals("New Name", result.getName());
-        assertEquals(new BigDecimal("15.00"), result.getDiscountPercentage());
+        assertTrue(result.isPresent());
+        assertEquals("New Name", result.get().getName());
+        assertEquals("New Description", result.get().getDescription());
     }
 
 }
