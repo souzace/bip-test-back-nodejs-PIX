@@ -30,7 +30,7 @@ services:
       DB_USER: pix
       DB_PASS: pix
     ports:
-      - "8080:8080"
+      - "8081:8080"
   pix-api-java-test:
     image: maven:3.8.8-eclipse-temurin-17
     working_dir: /app
@@ -42,5 +42,40 @@ services:
     build: ../services/pix-api-node
     depends_on: [mongo, kafka]
 
+  # EJB WildFly Server
+  wildfly:
+    image: quay.io/wildfly/wildfly:31.0.0.Final-jdk17
+    container_name: pix-wildfly
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+    environment:
+      - WILDFLY_USER=admin
+      - WILDFLY_PASS=admin
+    volumes:
+      - ./ejb-module/target/ejb-module-1.0.0.jar:/opt/jboss/wildfly/standalone/deployments/
+    networks:
+      - pix-network
+    command: >
+      /bin/bash -c "
+      /opt/jboss/wildfly/bin/add-user.sh admin admin --silent &&
+      /opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
+      "
+   # Serviço para compilar e testar o EJB
+  ejb-test:
+    image: maven:3.9-eclipse-temurin-17
+    working_dir: /app
+    volumes:
+      - ../ejb-module:/app
+      - maven-cache:/root/.m2
+    command: mvn clean test -B
+    networks:
+      - pix-network
+
 volumes:
   pgdata:
+  maven-cache:
+
+networks:
+  pix-network:
+    driver: bridge
