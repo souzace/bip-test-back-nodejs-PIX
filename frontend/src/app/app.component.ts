@@ -1,13 +1,18 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
   template: `
     <div class="app-container">
       <nav class="nav">
-        <h1>PIX Payment System</h1>
+        <h1>{{ 'NAV.TITLE' | translate }}</h1>
         <div class="nav-links">
-          <a routerLink="/benefits" routerLinkActive="active">Benefícios</a>
+          <a routerLink="/benefits" routerLinkActive="active">{{ 'NAV.BENEFITS' | translate }}</a>
+          <select (change)="switchLanguage($event)" class="lang-selector">
+            <option value="pt-BR">🇧🇷 PT</option>
+            <option value="en">🇺🇸 EN</option>
+          </select>
         </div>
       </nav>
       <div class="content">
@@ -33,10 +38,14 @@ import { Component } from '@angular/core';
       margin: 0;
       font-size: 24px;
     }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
     .nav-links a {
       color: white;
       text-decoration: none;
-      margin-left: 20px;
       padding: 8px 16px;
       border-radius: 4px;
       transition: background-color 0.3s;
@@ -46,6 +55,18 @@ import { Component } from '@angular/core';
     }
     .nav-links a.active {
       background-color: #007bff;
+    }
+    .lang-selector {
+      padding: 6px 10px;
+      border-radius: 4px;
+      border: none;
+      background-color: #555;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .lang-selector:hover {
+      background-color: #666;
     }
     .content {
       flex: 1;
@@ -58,4 +79,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'PIX Payment System';
+
+  constructor(private translate: TranslateService) {
+    this.translate.setDefaultLang('pt-BR');
+    this.translate.use('pt-BR');
+  }
+
+  switchLanguage(event: any): void {
+    this.translate.use(event.target.value);
+  }
 }
