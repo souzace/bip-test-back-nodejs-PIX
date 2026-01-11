@@ -1,0 +1,18 @@
+{
+  "NAV": {
+    "TITLE": "Sistema de Pagamentos PIX",
+    "BENEFITS": "Benefícios"
+  },
+  "BENEFITS": {
+    "TITLE": "Lista de Benefícios",
+    "LOADING": "Carregando...",
+    "ERROR": "Erro ao carregar benefícios",
+    "NO_DATA": "Nenhum benefício encontrado",
+    "TABLE": {
+      "ID": "ID",
+      "NAME": "Nome",
+      "DESCRIPTION": "Descrição",
+      "DISCOUNT": "Desconto (%)"
+    }
+  }
+}

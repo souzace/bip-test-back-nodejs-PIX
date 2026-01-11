@@ -1,16 +1,16 @@
 <div class="card">
-  <h2>Lista de Benefícios</h2>
+  <h2>{{ 'BENEFITS.TITLE' | translate }}</h2>
   
-  <div *ngIf="loading" class="loading">Carregando...</div>
-  <div *ngIf="error" class="error">{{ error }}</div>
+  <div *ngIf="loading" class="loading">{{ 'BENEFITS.LOADING' | translate }}</div>
+  <div *ngIf="error" class="error">{{ 'BENEFITS.ERROR' | translate }}</div>
   
   <table *ngIf="!loading && !error">
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Descrição</th>
-        <th>Desconto (%)</th>
+        <th>{{ 'BENEFITS.TABLE.ID' | translate }}</th>
+        <th>{{ 'BENEFITS.TABLE.NAME' | translate }}</th>
+        <th>{{ 'BENEFITS.TABLE.DESCRIPTION' | translate }}</th>
+        <th>{{ 'BENEFITS.TABLE.DISCOUNT' | translate }}</th>
       </tr>
     </thead>
     <tbody>
@@ -21,7 +21,7 @@
         <td>{{ benefit.discountPercentage }}</td>
       </tr>
       <tr *ngIf="benefits.length === 0">
-        <td colspan="4" style="text-align: center;">Nenhum benefício encontrado</td>
+        <td colspan="4" style="text-align: center;">{{ 'BENEFITS.NO_DATA' | translate }}</td>
       </tr>
     </tbody>
   </table>

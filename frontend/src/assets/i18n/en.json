@@ -1,0 +1,18 @@
+{
+  "NAV": {
+    "TITLE": "PIX Payment System",
+    "BENEFITS": "Benefits"
+  },
+  "BENEFITS": {
+    "TITLE": "Benefits List",
+    "LOADING": "Loading...",
+    "ERROR": "Error loading benefits",
+    "NO_DATA": "No benefits found",
+    "TABLE": {
+      "ID": "ID",
+      "NAME": "Name",
+      "DESCRIPTION": "Description",
+      "DISCOUNT": "Discount (%)"
+    }
+  }
+}
