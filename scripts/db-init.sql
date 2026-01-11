@@ -9,22 +9,22 @@
 -- ============================================================
 
 -- Benefits Table
--- Stores user balance information in the system
+-- Stores benefit/discount information in the system
 CREATE TABLE IF NOT EXISTS benefit (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id VARCHAR(100) NOT NULL,
-    balance NUMERIC(19, 2) NOT NULL DEFAULT 0.00,
-    pix_key VARCHAR(100) UNIQUE NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(500),
+    discount_percentage NUMERIC(5, 2) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
-    CONSTRAINT chk_balance_positive CHECK (balance >= 0),
-    CONSTRAINT chk_pix_key_not_empty CHECK (length(pix_key) > 0)
+    CONSTRAINT chk_discount_positive CHECK (discount_percentage >= 0),
+    CONSTRAINT chk_discount_max CHECK (discount_percentage <= 100),
+    CONSTRAINT chk_name_not_empty CHECK (length(name) > 0)
 );
 
 -- Indexes for query optimization
-CREATE INDEX IF NOT EXISTS idx_benefit_user_id ON benefit(user_id);
-CREATE INDEX IF NOT EXISTS idx_benefit_pix_key ON benefit(pix_key);
+CREATE INDEX IF NOT EXISTS idx_benefit_name ON benefit(name);
 CREATE INDEX IF NOT EXISTS idx_benefit_created_at ON benefit(created_at);
 
 -- PIX Payments Table
