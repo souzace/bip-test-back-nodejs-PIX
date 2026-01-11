@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
         <div class="nav-links">
           <a routerLink="/benefits" routerLinkActive="active">{{ 'NAV.BENEFITS' | translate }}</a>
           <a routerLink="/payment" routerLinkActive="active">{{ 'NAV.PAYMENT' | translate }}</a>
+          <a routerLink="/history" routerLinkActive="active">{{ 'NAV.HISTORY' | translate }}</a>
           <select (change)="switchLanguage($event)" class="lang-selector">
             <option value="pt-BR">🇧🇷 PT</option>
             <option value="en">🇺🇸 EN</option>

@@ -1,0 +1,95 @@
+<div class="card">
+  <h2>{{ 'HISTORY.TITLE' | translate }}</h2>
+  
+  <!-- Filters -->
+  <div class="filters">
+    <div class="form-group">
+      <label for="senderFilter">{{ 'HISTORY.FILTERS.SENDER' | translate }}</label>
+      <input 
+        type="text" 
+        id="senderFilter" 
+        [(ngModel)]="senderPixKey"
+        [placeholder]="'HISTORY.FILTERS.SENDER_PLACEHOLDER' | translate"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="receiverFilter">{{ 'HISTORY.FILTERS.RECEIVER' | translate }}</label>
+      <input 
+        type="text" 
+        id="receiverFilter" 
+        [(ngModel)]="receiverPixKey"
+        [placeholder]="'HISTORY.FILTERS.RECEIVER_PLACEHOLDER' | translate"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="statusFilter">{{ 'HISTORY.FILTERS.STATUS' | translate }}</label>
+      <select id="statusFilter" [(ngModel)]="status">
+        <option value="">{{ 'HISTORY.FILTERS.ALL' | translate }}</option>
+        <option value="COMPLETED">{{ 'HISTORY.FILTERS.COMPLETED' | translate }}</option>
+        <option value="PENDING">{{ 'HISTORY.FILTERS.PENDING' | translate }}</option>
+        <option value="FAILED">{{ 'HISTORY.FILTERS.FAILED' | translate }}</option>
+      </select>
+    </div>
+
+    <div class="filter-actions">
+      <button class="btn btn-primary" (click)="applyFilters()">{{ 'HISTORY.FILTERS.APPLY' | translate }}</button>
+      <button class="btn" (click)="clearFilters()">{{ 'HISTORY.FILTERS.CLEAR' | translate }}</button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">{{ 'HISTORY.LOADING' | translate }}</div>
+  <div *ngIf="error" class="error">{{ error | translate }}</div>
+  
+  <!-- Table -->
+  <table *ngIf="!loading && !error">
+    <thead>
+      <tr>
+        <th>{{ 'HISTORY.TABLE.DATE' | translate }}</th>
+        <th>{{ 'HISTORY.TABLE.SENDER' | translate }}</th>
+        <th>{{ 'HISTORY.TABLE.RECEIVER' | translate }}</th>
+        <th>{{ 'HISTORY.TABLE.AMOUNT' | translate }}</th>
+        <th>{{ 'HISTORY.TABLE.DESCRIPTION' | translate }}</th>
+        <th>{{ 'HISTORY.TABLE.STATUS' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let payment of payments">
+        <td>{{ formatDate(payment.createdAt!) }}</td>
+        <td>{{ payment.senderPixKey }}</td>
+        <td>{{ payment.receiverPixKey }}</td>
+        <td>{{ formatCurrency(payment.amount) }}</td>
+        <td>{{ payment.description }}</td>
+        <td>
+          <span [class]="'status-' + payment.status?.toLowerCase()">
+            {{ payment.status }}
+          </span>
+        </td>
+      </tr>
+      <tr *ngIf="payments.length === 0">
+        <td colspan="6" style="text-align: center;">{{ 'HISTORY.NO_DATA' | translate }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="totalPages > 0">
+    <button 
+      class="btn" 
+      (click)="goToPage(currentPage - 1)" 
+      [disabled]="currentPage === 0"
+    >
+      {{ 'HISTORY.PAGINATION.PREVIOUS' | translate }}
+    </button>
+    <span>{{ 'HISTORY.PAGINATION.PAGE' | translate }} {{ currentPage + 1 }} {{ 'HISTORY.PAGINATION.OF' | translate }} {{ totalPages }}</span>
+    <span>({{ totalElements }} {{ 'HISTORY.PAGINATION.RECORDS' | translate }})</span>
+    <button 
+      class="btn" 
+      (click)="goToPage(currentPage + 1)" 
+      [disabled]="currentPage === totalPages - 1"
+    >
+      {{ 'HISTORY.PAGINATION.NEXT' | translate }}
+    </button>
+  </div>
+</div>
