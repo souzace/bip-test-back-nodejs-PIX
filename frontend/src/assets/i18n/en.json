@@ -1,7 +1,8 @@
 {
   "NAV": {
     "TITLE": "PIX Payment System",
-    "BENEFITS": "Benefits"
+    "BENEFITS": "Benefits",
+    "PAYMENT": "New Payment"
   },
   "BENEFITS": {
     "TITLE": "Benefits List",
@@ -13,6 +14,27 @@
       "NAME": "Name",
       "DESCRIPTION": "Description",
       "DISCOUNT": "Discount (%)"
+    }
+  },
+  "PAYMENT": {
+    "TITLE": "New PIX Payment",
+    "SUCCESS": "Payment completed successfully! ID: {{id}}",
+    "ERROR": "Error processing payment",
+    "PROCESSING": "Processing...",
+    "SUBMIT": "Submit Payment",
+    "FORM": {
+      "SENDER_KEY": "Sender PIX Key",
+      "SENDER_KEY_PLACEHOLDER": "Enter sender PIX key",
+      "SENDER_KEY_REQUIRED": "Sender PIX key is required",
+      "RECEIVER_KEY": "Receiver PIX Key",
+      "RECEIVER_KEY_PLACEHOLDER": "Enter receiver PIX key",
+      "RECEIVER_KEY_REQUIRED": "Receiver PIX key is required",
+      "AMOUNT": "Amount ($)",
+      "AMOUNT_PLACEHOLDER": "0.00",
+      "AMOUNT_REQUIRED": "Amount is required",
+      "AMOUNT_MIN": "Amount must be greater than zero",
+      "DESCRIPTION": "Description",
+      "DESCRIPTION_PLACEHOLDER": "Payment description (optional)"
     }
   }
 }
