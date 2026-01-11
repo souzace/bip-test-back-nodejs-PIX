@@ -13,15 +13,23 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ../scripts/db-init.sql:/docker-entrypoint-initdb.d/01-db-init.sql
       - ../scripts/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+    networks:
+      - pix-network
 
   mongo:
     image: mongo:6
+    networks:
+      - pix-network
 
   kafka:
     image: confluentinc/cp-kafka:7.5.0
+    networks:
+      - pix-network
 
   rabbitmq:
     image: rabbitmq:3-management
+    networks:
+      - pix-network
 
   pix-api-java:
     build: ../services/pix-api-java
@@ -32,16 +40,29 @@ services:
       DB_PASS: pix
     ports:
       - "8081:8080"
+    networks:
+      - pix-network
+      
   pix-api-java-test:
     image: maven:3.8.8-eclipse-temurin-17
     working_dir: /app
     volumes:
       - ../services/pix-api-java:/app
     command: mvn test -B -Dsurefire.printSummary=true -Dsurefire.reportFormat=plain
+    networks:
+      - pix-network
 
   pix-api-node:
     build: ../services/pix-api-node
     depends_on: [mongo, kafka]
+
+  frontend:
+    build: ../frontend
+    depends_on: [pix-api-java]
+    ports:
+      - "4200:80"
+    networks:
+      - pix-network
 
   # EJB WildFly Server
   wildfly:
