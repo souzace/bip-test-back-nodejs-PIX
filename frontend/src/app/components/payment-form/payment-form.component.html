@@ -1,0 +1,67 @@
+<div class="card">
+  <h2>{{ 'PAYMENT.TITLE' | translate }}</h2>
+  
+  <div *ngIf="success" class="success">{{ success }}</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  
+  <form [formGroup]="transferForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="senderPixKey">{{ 'PAYMENT.FORM.SENDER_KEY' | translate }} *</label>
+      <input 
+        type="text" 
+        id="senderPixKey" 
+        formControlName="senderPixKey"
+        [class.invalid]="submitted && f['senderPixKey'].errors"
+        [placeholder]="'PAYMENT.FORM.SENDER_KEY_PLACEHOLDER' | translate"
+      />
+      <div *ngIf="submitted && f['senderPixKey'].errors" class="error-msg">
+        {{ 'PAYMENT.FORM.SENDER_KEY_REQUIRED' | translate }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="receiverPixKey">{{ 'PAYMENT.FORM.RECEIVER_KEY' | translate }} *</label>
+      <input 
+        type="text" 
+        id="receiverPixKey" 
+        formControlName="receiverPixKey"
+        [class.invalid]="submitted && f['receiverPixKey'].errors"
+        [placeholder]="'PAYMENT.FORM.RECEIVER_KEY_PLACEHOLDER' | translate"
+      />
+      <div *ngIf="submitted && f['receiverPixKey'].errors" class="error-msg">
+        {{ 'PAYMENT.FORM.RECEIVER_KEY_REQUIRED' | translate }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="amount">{{ 'PAYMENT.FORM.AMOUNT' | translate }} *</label>
+      <input 
+        type="number" 
+        id="amount" 
+        formControlName="amount"
+        [class.invalid]="submitted && f['amount'].errors"
+        [placeholder]="'PAYMENT.FORM.AMOUNT_PLACEHOLDER' | translate"
+        step="0.01"
+        min="0.01"
+      />
+      <div *ngIf="submitted && f['amount'].errors" class="error-msg">
+        <span *ngIf="f['amount'].errors['required']">{{ 'PAYMENT.FORM.AMOUNT_REQUIRED' | translate }}</span>
+        <span *ngIf="f['amount'].errors['min']">{{ 'PAYMENT.FORM.AMOUNT_MIN' | translate }}</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">{{ 'PAYMENT.FORM.DESCRIPTION' | translate }}</label>
+      <input 
+        type="text" 
+        id="description" 
+        formControlName="description"
+        [placeholder]="'PAYMENT.FORM.DESCRIPTION_PLACEHOLDER' | translate"
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="loading">
+      {{ loading ? ('PAYMENT.PROCESSING' | translate) : ('PAYMENT.SUBMIT' | translate) }}
+    </button>
+  </form>
+</div>
