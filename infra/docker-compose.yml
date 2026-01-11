@@ -11,7 +11,8 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ../scripts/db-init.sql:/docker-entrypoint-initdb.d/db-init.sql
+      - ../scripts/db-init.sql:/docker-entrypoint-initdb.d/01-db-init.sql
+      - ../scripts/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
 
   mongo:
     image: mongo:6
