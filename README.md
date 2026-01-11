@@ -24,6 +24,7 @@ O objetivo é entregar uma solução funcional ponta a ponta que corrija uma fal
 * `/scripts`: Scripts SQL para criação do banco (`db-init.sql`) e massa de dados inicial (`seed.sql`).
 * `/ejb-module`: Módulo de serviço EJB contendo a regra de negócio com falha de concorrência.
 * `/services/pix-api-java`: API Spring Boot que consome o EJB e expõe os recursos.
+* `/frontend`: Interface Angular com suporte multilíngue (PT-BR/EN).
 * `/infra`: Configuração Docker Compose para execução do ambiente.
 * `/docs`: Documentação complementar e critérios técnicos.
 
@@ -82,8 +83,14 @@ docker-compose up -d --build
 - `pix-api-node` - API Node.js
 - `wildfly` - Servidor WildFly para EJB (portas 8080, 9990)
 - `ejb-test` - Testes automatizados do EJB
+- `frontend` - Frontend Angular (porta 4200)
 
 **Nota:** Os scripts SQL (`db-init.sql` e `seed.sql`) são executados automaticamente na primeira vez que o container PostgreSQL é criado. Se o volume já existe, os scripts não serão executados novamente.
+
+**Acessar a aplicação:**
+- 🌐 **Frontend:** http://localhost:4200
+- 🔧 **API Backend:** http://localhost:8081/api/v1
+- 📊 **WildFly Admin:** http://localhost:9990
 
 ### Opção 2: Executar Manualmente (Apenas Banco de Dados)
 
@@ -186,6 +193,49 @@ Testes de concorrência com 20 threads simultâneas:
 - **Depois:** 5 pagamentos aprovados, 15 rejeitados (CORRETO)
 
 **Status:** ✅ 32/32 testes passando
+
+---
+
+## 🎨 Interface do Usuário (Frontend)
+
+### Tecnologias
+
+- **Angular 17** - Framework frontend
+- **TypeScript** - Linguagem de programação
+- **ngx-translate** - Suporte multilíngue (PT-BR/EN)
+- **Reactive Forms** - Formulários reativos com validação
+- **Nginx** - Servidor web e proxy reverso
+
+### Funcionalidades Implementadas
+
+1. **Listagem de Benefícios** (`/benefits`)
+   - Tabela com todos os benefícios disponíveis
+   - Estados de loading e tratamento de erros
+
+2. **Novo Pagamento PIX** (`/payment`)
+   - Formulário reativo com validações
+   - Campos: Chave PIX remetente/destinatário, valor, descrição
+   - Feedback visual de sucesso/erro
+
+3. **Histórico de Pagamentos** (`/history`)
+   - Listagem com paginação (10 registros por página)
+   - Filtros: remetente, destinatário, status
+   - Formatação de data e moeda (PT-BR)
+   - Status coloridos (COMPLETED/PENDING/FAILED)
+
+4. **Suporte Multilíngue**
+   - Português (PT-BR) - Idioma padrão
+   - Inglês (EN)
+   - Seletor de idioma na barra de navegação
+
+### Executar Frontend Localmente
+
+```bash
+cd frontend
+npm install
+npm start
+# Acesse: http://localhost:4200
+```
 
 ---
 
