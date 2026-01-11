@@ -2,7 +2,8 @@
   "NAV": {
     "TITLE": "PIX Payment System",
     "BENEFITS": "Benefits",
-    "PAYMENT": "New Payment"
+    "PAYMENT": "New Payment",
+    "HISTORY": "History"
   },
   "BENEFITS": {
     "TITLE": "Benefits List",
@@ -35,6 +36,40 @@
       "AMOUNT_MIN": "Amount must be greater than zero",
       "DESCRIPTION": "Description",
       "DESCRIPTION_PLACEHOLDER": "Payment description (optional)"
+    }
+  },
+  "HISTORY": {
+    "TITLE": "Payment History",
+    "LOADING": "Loading...",
+    "ERROR": "Error loading history",
+    "NO_DATA": "No payments found",
+    "FILTERS": {
+      "SENDER": "Sender PIX Key",
+      "SENDER_PLACEHOLDER": "Filter by sender",
+      "RECEIVER": "Receiver PIX Key",
+      "RECEIVER_PLACEHOLDER": "Filter by receiver",
+      "STATUS": "Status",
+      "ALL": "All",
+      "COMPLETED": "Completed",
+      "PENDING": "Pending",
+      "FAILED": "Failed",
+      "APPLY": "Apply",
+      "CLEAR": "Clear"
+    },
+    "TABLE": {
+      "DATE": "Date",
+      "SENDER": "Sender",
+      "RECEIVER": "Receiver",
+      "AMOUNT": "Amount",
+      "DESCRIPTION": "Description",
+      "STATUS": "Status"
+    },
+    "PAGINATION": {
+      "PREVIOUS": "Previous",
+      "NEXT": "Next",
+      "PAGE": "Page",
+      "OF": "of",
+      "RECORDS": "records"
     }
   }
 }

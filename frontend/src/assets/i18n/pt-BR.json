@@ -2,7 +2,8 @@
   "NAV": {
     "TITLE": "Sistema de Pagamentos PIX",
     "BENEFITS": "Benefícios",
-    "PAYMENT": "Novo Pagamento"
+    "PAYMENT": "Novo Pagamento",
+    "HISTORY": "Histórico"
   },
   "BENEFITS": {
     "TITLE": "Lista de Benefícios",
@@ -35,6 +36,40 @@
       "AMOUNT_MIN": "Valor deve ser maior que zero",
       "DESCRIPTION": "Descrição",
       "DESCRIPTION_PLACEHOLDER": "Descrição do pagamento (opcional)"
+    }
+  },
+  "HISTORY": {
+    "TITLE": "Histórico de Pagamentos",
+    "LOADING": "Carregando...",
+    "ERROR": "Erro ao carregar histórico",
+    "NO_DATA": "Nenhum pagamento encontrado",
+    "FILTERS": {
+      "SENDER": "Chave PIX Remetente",
+      "SENDER_PLACEHOLDER": "Filtrar por remetente",
+      "RECEIVER": "Chave PIX Destinatário",
+      "RECEIVER_PLACEHOLDER": "Filtrar por destinatário",
+      "STATUS": "Status",
+      "ALL": "Todos",
+      "COMPLETED": "Completo",
+      "PENDING": "Pendente",
+      "FAILED": "Falhou",
+      "APPLY": "Filtrar",
+      "CLEAR": "Limpar"
+    },
+    "TABLE": {
+      "DATE": "Data",
+      "SENDER": "Remetente",
+      "RECEIVER": "Destinatário",
+      "AMOUNT": "Valor",
+      "DESCRIPTION": "Descrição",
+      "STATUS": "Status"
+    },
+    "PAGINATION": {
+      "PREVIOUS": "Anterior",
+      "NEXT": "Próxima",
+      "PAGE": "Página",
+      "OF": "de",
+      "RECORDS": "registros"
     }
   }
 }
