@@ -55,10 +55,12 @@ SELECT
     (SELECT COUNT(*) FROM benefit) as total_benefits,
     (SELECT COUNT(*) FROM pix_payment) as total_payments;
 
--- Balance summary
+-- Benefit statistics
 SELECT 
-    'Total System Balance' as description,
-    SUM(balance) as total_amount 
+    'Benefit Statistics' as description,
+    COUNT(*) as total_benefits,
+    AVG(discount_percentage) as avg_discount,
+    MAX(discount_percentage) as max_discount
 FROM benefit;
 
 -- Transaction summary by status
