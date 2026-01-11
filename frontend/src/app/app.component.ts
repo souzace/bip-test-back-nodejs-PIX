@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
       <nav class="nav">
         <h1>PIX Payment System</h1>
         <div class="nav-links">
-          <a routerLink="/home" routerLinkActive="active">Home</a>
+          <a routerLink="/benefits" routerLinkActive="active">Benefícios</a>
         </div>
       </nav>
       <div class="content">

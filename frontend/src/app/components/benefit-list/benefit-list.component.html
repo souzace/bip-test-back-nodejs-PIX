@@ -1,0 +1,28 @@
+<div class="card">
+  <h2>Lista de Benefícios</h2>
+  
+  <div *ngIf="loading" class="loading">Carregando...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  
+  <table *ngIf="!loading && !error">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th>Desconto (%)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let benefit of benefits">
+        <td>{{ benefit.id }}</td>
+        <td>{{ benefit.name }}</td>
+        <td>{{ benefit.description }}</td>
+        <td>{{ benefit.discountPercentage }}</td>
+      </tr>
+      <tr *ngIf="benefits.length === 0">
+        <td colspan="4" style="text-align: center;">Nenhum benefício encontrado</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
