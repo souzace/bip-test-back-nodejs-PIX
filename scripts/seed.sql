@@ -13,20 +13,20 @@ TRUNCATE TABLE pix_payment CASCADE;
 TRUNCATE TABLE benefit CASCADE;
 
 -- ============================================================
--- Insert Benefits (Users with balance)
+-- Insert Benefits (Discount programs)
 -- ============================================================
 
-INSERT INTO benefit (id, user_id, balance, pix_key, created_at, updated_at) VALUES
-    ('550e8400-e29b-41d4-a716-446655440001', 'user001', 1000.00, '11987654321', NOW(), NOW()),
-    ('550e8400-e29b-41d4-a716-446655440002', 'user002', 500.00, '11987654322', NOW(), NOW()),
-    ('550e8400-e29b-41d4-a716-446655440003', 'user003', 750.50, '11987654323', NOW(), NOW()),
-    ('550e8400-e29b-41d4-a716-446655440004', 'user004', 250.00, 'maria@email.com', NOW(), NOW()),
-    ('550e8400-e29b-41d4-a716-446655440005', 'user005', 1500.75, 'joao@email.com', NOW(), NOW()),
-    ('550e8400-e29b-41d4-a716-446655440006', 'user006', 100.00, '12345678901', NOW(), NOW()),
-    ('550e8400-e29b-41d4-a716-446655440007', 'user007', 2000.00, '98765432100', NOW(), NOW()),
-    ('550e8400-e29b-41d4-a716-446655440008', 'user008', 50.00, 'pedro@email.com', NOW(), NOW()),
-    ('550e8400-e29b-41d4-a716-446655440009', 'user009', 800.25, 'ana@email.com', NOW(), NOW()),
-    ('550e8400-e29b-41d4-a716-446655440010', 'user010', 300.00, '11999887766', NOW(), NOW());
+INSERT INTO benefit (id, name, description, discount_percentage) VALUES
+    ('550e8400-e29b-41d4-a716-446655440001', 'Programa Fidelidade Ouro', 'Desconto exclusivo para clientes premium com mais de 1 ano', 15.00),
+    ('550e8400-e29b-41d4-a716-446655440002', 'Desconto Estudante', 'Benefício para estudantes universitários', 20.00),
+    ('550e8400-e29b-41d4-a716-446655440003', 'Cashback Mensal', 'Receba até 10% de cashback em suas compras', 10.00),
+    ('550e8400-e29b-41d4-a716-446655440004', 'Parceiro Corporativo', 'Desconto para empresas parceiras', 25.00),
+    ('550e8400-e29b-41d4-a716-446655440005', 'Primeiro Cadastro', 'Bônus de boas-vindas para novos usuários', 5.00),
+    ('550e8400-e29b-41d4-a716-446655440006', 'Black Friday 2025', 'Desconto especial da Black Friday', 30.00),
+    ('550e8400-e29b-41d4-a716-446655440007', 'Aposentados e Pensionistas', 'Benefício social para aposentados', 12.50),
+    ('550e8400-e29b-41d4-a716-446655440008', 'Programa Indicação', 'Ganhe descontos indicando amigos', 8.00),
+    ('550e8400-e29b-41d4-a716-446655440009', 'Cliente VIP', 'Benefício exclusivo para clientes VIP', 18.00),
+    ('550e8400-e29b-41d4-a716-446655440010', 'Aniversariante do Mês', 'Desconto especial no mês do seu aniversário', 15.00);
 
 -- ============================================================
 -- Insert PIX Payments (Transaction history)
